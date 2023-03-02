@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+<style>
+body{
+  background-color: rgb(173, 230, 190);
+  font-family:sans-serif;
+}
+#Uberschrift{
+    margin-left: 13%;
+    font-size:35px;
+}
+
+#wrapper{
+  background-color: wheat;
+  width: 500px;
+  border: 15px solid lightslategrey;
+  padding: 50px;
+  margin-left: 5%;
+}
+#box{
+  background-color: wheat;
+  width: 300px;
+  border: 15px solid lightslategrey;
+  padding: 50px;
+  margin-left: 5%;
+}
+
+
+
+
+</style>
+</head>
+<body>
+
+<span style='color: #003366;'>
+
+<h1 id="Uberschrift">Wetter an der HTL Wolfsberg</h1>
+
+
+<div id="wrapper">
+<p id ="box">Temperature: <span id='temp'>-</span></p>
+<p id ="box">Humidity: <span id='humi'>-</span></p>
+<p id ="box">Himmelsrichtung: <span id='himmR'>-</span></p>
+<p id="box">Windgeschwindigkeit: <span id='windS'>-</span></p>
+</div>
+
+
+
+</span>
+</body>
+    <script>
+        var Socket;
+        function init() {
+          Socket = new WebSocket('ws://' + window.location.hostname + ':81/');
+          Socket.onmessage = function(event) {
+            processCommand(event);
+          };
+        }
+        function processCommand(event) {
+      	var obj = JSON.parse(event.data);
+      	document.getElementById('temp').innerHTML = obj.temp + "&deg;C";
+      	document.getElementById('humi').innerHTML = obj.humi + "%";
+        document.getElementById('himmR').innerHTML = obj.himmR;
+        document.getElementById('windS').innerHTML = obj.windS + "km/h";
+        console.log(obj.temp);
+      	console.log(obj.humi);
+        console.log(obj.himmR);
+        console.log(obj.windS);
+        }
+        window.onload = function(event) {
+          init();
+        }
+    </script>
+</html>
